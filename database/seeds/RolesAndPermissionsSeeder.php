@@ -27,12 +27,19 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'alterar_usuario', 'description' => 'Administração - Alterar Usuário']);
         Permission::create(['name' => 'deletar_usuario', 'description' => 'Administração - Deletar Usuário']);
 
+        $national = Role::create(['name' => 'national', 'description' => 'Usuário Nacional']);
+        $state = Role::create(['name' => 'state', 'description' => 'Usuário Estadual']);
+        $county = Role::create(['name' => 'county', 'description' => 'Usuário Municipal']);
+
         // create roles and assign existing permissions
-        $role = Role::create(['name' => 'sadmin', 'description' => 'Super Administrador']);
-        $role->givePermissionTo('acesso_mod_administracao');
-        $role->givePermissionTo('acesso_cad_usuario');
-        $role->givePermissionTo('inserir_usuario');
-        $role->givePermissionTo('alterar_usuario');
-        $role->givePermissionTo('deletar_usuario');
+        $sadmin = Role::create(['name' => 'sadmin', 'description' => 'Super Administrador']);
+        $sadmin->givePermissionTo('acesso_mod_administracao');
+        $sadmin->givePermissionTo('acesso_cad_usuario');
+        $sadmin->givePermissionTo('inserir_usuario');
+        $sadmin->givePermissionTo('alterar_usuario');
+        $sadmin->givePermissionTo('deletar_usuario');
+
+
+
     }
 }
