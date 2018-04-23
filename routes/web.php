@@ -26,4 +26,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('users', 'UsersController');
         });
     });
+
+//    Route::get('/usuario/novo', 'UsersController@novo');
+//    Route::resource('finish_registration', 'UsersController');
+
 });
