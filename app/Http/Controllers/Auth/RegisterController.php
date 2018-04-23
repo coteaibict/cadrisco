@@ -82,9 +82,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $fields = [
-            'name'     => $data['name'],
+            'name'     => strtoupper($data['name']),
             'cpf'     => $data['cpf'],
-            'email'    => $data['email'],
+            'email'    => strtolower($data['email']),
             'password' => bcrypt($data['password']),
         ];
         if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
@@ -92,4 +92,5 @@ class RegisterController extends Controller
         }
         return User::create($fields);
     }
+
 }

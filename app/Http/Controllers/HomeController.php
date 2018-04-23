@@ -9,6 +9,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 /**
  * Class HomeController
@@ -33,6 +35,18 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+
+        if(!$user->hasAnyRole(Role::all())){
+            return redirect('register/finish');
+        }
+
         return view('adminlte::home');
     }
+
+    public function finish_form()
+    {
+        return view('adminlte::home');
+    }
+
 }

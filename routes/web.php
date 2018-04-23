@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-//    Route::get('/usuario/novo', 'UsersController@novo');
+    Route::get('/register/finish', 'HomeController@finish_form');
 //    Route::resource('finish_registration', 'UsersController');
 
 });

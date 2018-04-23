@@ -171,6 +171,7 @@ class UsersController extends Controller
         session()->flash('message','Usuário editado com sucesso');
 
         return redirect()->route('admin.users.index');
+
     }
 
     /**
