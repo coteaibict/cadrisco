@@ -68,6 +68,8 @@ class RegisterController extends Controller
 //            'username' => 'sometimes|required|max:255|unique:users',
             'cpf' => 'required|cpf|unique:users',
             'email'    => 'required|email|max:255|unique:users',
+            'office'    => 'max:255',
+            'phone'    => 'required|telefone_com_ddd',
             'password' => 'required|min:6|confirmed',
             'terms'    => 'required',
         ]);
@@ -85,6 +87,8 @@ class RegisterController extends Controller
             'name'     => strtoupper($data['name']),
             'cpf'     => $data['cpf'],
             'email'    => strtolower($data['email']),
+            'office'    => strtoupper($data['office']),
+            'phone'    => $data['phone'],
             'password' => bcrypt($data['password']),
         ];
         if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {

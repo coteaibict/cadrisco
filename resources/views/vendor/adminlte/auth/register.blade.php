@@ -48,6 +48,14 @@
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
+                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.office') }}" name="office" value="{{ old('office') }}"/>
+                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" required="required" placeholder="{{ trans('adminlte_lang::message.phonewithddd') }}" name="phone" id="phone" value="{{ old('phone') }}"/>
+                        <span class="glyphicon glyphicon-phone-alt form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
                         <input type="password" class="form-control" required="required" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
@@ -96,6 +104,8 @@
     <script type="text/javascript">
 
         $('#cpf').mask('999.999.999-99');
+
+        $('#phone').mask('(99)9999-9999');
 
 
     </script>
