@@ -5,5 +5,5 @@
         versão {{ env('APP_VERSION') }} release {{ env('APP_RELEASE') }}
     </div>
     <!-- Default to the left -->
-    &nbsp;
+    &nbsp;<strong>Copyright &copy; 2018 <a href="#">{{ env('APP_NAME') }}</a> - </strong> Todos direitos reservados.
 </footer>
