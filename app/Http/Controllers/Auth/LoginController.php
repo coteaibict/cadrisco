@@ -88,5 +88,16 @@ class LoginController extends Controller
             $request->has('remember'));
     }
 
+    protected function validateLogin(Request $request) {
+
+        $this->validate($request,
+            [ $this->username() => 'required|exists:users,' . $this->username() . ',active,1', 'password' => 'required', ],
+            [ $this->username() . '.exists' => 'Usuário Inativo.' ]
+        );
+
+    }
+
+
+
 
 }
