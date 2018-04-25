@@ -94,10 +94,6 @@ class LoginController extends Controller
             [ $this->username() => 'required|exists:users,' . $this->username() . ',active,1', 'password' => 'required', ],
             [ $this->username() . '.exists' => 'Usuário Inativo.' ]
         );
-
     }
-
-
-
 
 }
