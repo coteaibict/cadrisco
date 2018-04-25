@@ -88,12 +88,13 @@ class RegisterController extends Controller
             'cpf'     => $data['cpf'],
             'email'    => strtolower($data['email']),
             'office'    => strtoupper($data['office']),
+            'registration'    => strtoupper($data['registration']),
             'phone'    => $data['phone'],
             'password' => bcrypt($data['password']),
         ];
-        if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
-            $fields['username'] = $data['username'];
-        }
+//        if (config('auth.providers.users.field','email') === 'username' && isset($data['username'])) {
+//            $fields['username'] = $data['username'];
+//        }
         return User::create($fields);
     }
 

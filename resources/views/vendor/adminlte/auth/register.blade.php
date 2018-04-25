@@ -42,7 +42,6 @@
                             <span class="glyphicon glyphicon-user form-control-feedback"></span>
                         </div>
                     @endif
-
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" required="required" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email" value="{{ old('email') }}"/>
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -50,6 +49,10 @@
                     <div class="form-group has-feedback">
                         <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.office') }}" name="office" value="{{ old('office') }}"/>
                         <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.registration') }}" name="registration" value="{{ old('registration') }}"/>
+                        <span class="glyphicon glyphicon-barcode form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input type="text" class="form-control" required="required" placeholder="{{ trans('adminlte_lang::message.phonewithddd') }}" name="phone" id="phone" value="{{ old('phone') }}"/>

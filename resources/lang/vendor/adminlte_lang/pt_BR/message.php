@@ -27,6 +27,7 @@ return [
     'office'                  => 'Cargo',
     'phone'                   => 'Telefone',
     'phonewithddd'            => 'Telefone com DDD',
+    'registration'            => 'Matrícula',
     'login'                   => 'Entrar',
     'membership'              => 'Já sou cadastrado',
     'passwordclickreset'      => 'Clique aqui para redefinir sua senha:',
