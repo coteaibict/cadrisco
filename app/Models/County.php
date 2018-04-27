@@ -9,4 +9,9 @@ class County extends Model
     protected $fillable = [
         'id', 'name', 'microregion'
     ];
+
+    public function documents(){
+        return $this->hasMany('App\Models\County', 'county_id');
+    }
+
 }

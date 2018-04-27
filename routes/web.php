@@ -27,7 +27,17 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-    Route::get('/register/finish', 'HomeController@finish_form');
-//    Route::resource('finish_registration', 'UsersController');
+
+    Route::prefix('register')->group(function (){
+        Route::group([
+            'namespace' => 'Users\\',
+            'as' => 'register.'
+        ], function (){
+            Route::resource('finish', 'DocumentsController');
+        });
+    });
+
+
+
 
 });

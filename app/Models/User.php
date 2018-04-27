@@ -42,6 +42,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function documents(){
+        return $this->hasMany('App\Models\Document', 'user_id');
+    }
+
     /**
      * Send a password reset email to the user
      */

@@ -9,4 +9,9 @@ class State extends Model
     protected $fillable = [
         'id', 'name', 'initials'
     ];
+
+    public function documents(){
+        return $this->hasMany('App\Models\Document', 'state_id');
+    }
+
 }
