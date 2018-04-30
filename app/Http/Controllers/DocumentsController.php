@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Forms\RegisterFinishForm;
 use App\Models\Document;
+use App\Models\State;
 use App\Table\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DocumentsController extends Controller
 {
@@ -23,7 +25,6 @@ class DocumentsController extends Controller
      */
     public function index()
     {
-
         $user = Auth::user();
 
         $this->table
@@ -83,9 +84,13 @@ class DocumentsController extends Controller
      */
     public function create()
     {
+        $state = State::select(DB::raw("CONCAT(initials,' - ',name) AS name"),'id')
+            ->orderBy('name','asc')->pluck('name','id')->toArray();
+
         $form = \FormBuilder::create(RegisterFinishForm::class,[
             'url' => route('documents.store'),
-            'method' => 'POST'
+            'method' => 'POST',
+            'data' => ['state' => $state]
         ]);
 
         return view('adminlte::modules.register.finish.create',compact('form'));

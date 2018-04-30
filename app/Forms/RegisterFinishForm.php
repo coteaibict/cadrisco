@@ -8,6 +8,11 @@ class RegisterFinishForm extends Form
 {
     public function buildForm()
     {
+
+        $state = $this->getData('state') ?? "NULL";
+
+        $county = $this->getData('county') ?? "NULL";
+
         $this
             ->add('ordinance', 'file', [
                 'label' => 'Diário Oficial',
@@ -20,14 +25,18 @@ class RegisterFinishForm extends Form
             ->add('role', 'select', [
                 'label' => 'Perfil Pretendido',
                 'rules' => "required",
-                'choices' => ['national' => 'English', 'fr' => 'French'],
-                'empty_value' => 'Selecione'
+                'choices' => ['state' => 'Estadual', 'county' => 'Municipal', 'national' => 'National'],
+                'empty_value' => 'Selecione',
+                'rules' => "required"
             ])
             ->add('state_id', 'select', [
-                'label' => 'Estado'
+                'label' => 'Estado',
+                'choices' => $state,
+                'empty_value' => 'Selecione',
             ])
             ->add('county_id', 'select', [
-                'label' => 'Município'
+                'label' => 'Município',
+                'empty_value' => 'Selecione',
             ]);
     }
 }

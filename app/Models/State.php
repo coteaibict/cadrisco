@@ -14,4 +14,12 @@ class State extends Model
         return $this->hasMany('App\Models\Document', 'state_id');
     }
 
+    public function mesoregion(){
+        return $this->hasMany('App\Models\Mesoregion', 'state');
+    }
+
+    public function region(){
+        return $this->belongsTo('App\Models\Region', 'region');
+    }
+
 }

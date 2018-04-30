@@ -29,7 +29,21 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('documents', 'DocumentsController');
 
+    Route::get('/county/ajax',function()
+    {
+        $state_id = \Illuminate\Support\Facades\Input::get('state_id');
+        $state = \App\Models\State::with('mesoregion.county')->find($state_id);
+        $county = [];
+        $state->mesoregion->each(function ($mesoregion) use (&$county){
+            $county = array_merge($county,$mesoregion->county->toArray());
+        });
+        foreach($county as $v){
+            $retorn[$v['id']] = $v['name'];
+        }
 
+        return $retorn;
+
+    });
 
 
 

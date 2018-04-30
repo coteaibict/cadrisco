@@ -10,8 +10,12 @@ class County extends Model
         'id', 'name', 'microregion'
     ];
 
-    public function documents(){
+        public function documents(){
         return $this->hasMany('App\Models\County', 'county_id');
+    }
+
+    public function microregion(){
+        return $this->belongsTo('App\Models\Microregion', 'microregion');
     }
 
 }

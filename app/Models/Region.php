@@ -9,4 +9,9 @@ class Region extends Model
     protected $fillable = [
         'id', 'name', 'initials', 'region'
     ];
+
+    public function state(){
+        return $this->hasMany('App\Models\State', 'region');
+    }
+
 }

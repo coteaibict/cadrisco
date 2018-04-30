@@ -10,11 +10,11 @@
     <!-- Default box -->
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Listagem de Usuários</h3>
+            <h3 class="box-title">Listagem de Solicitações</h3>
         </div>
         <div class="box-body">
             <div class="box-tools">
-                {!! Button::primary('Novo usuário')->asLinkTo(route('admin.users.create')) !!}
+                {!! Button::primary('Nova solicitação')->asLinkTo(route('documents.create')) !!}
             </div>
             <br/>
             <div class="col-sm-12">
