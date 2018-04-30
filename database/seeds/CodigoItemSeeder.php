@@ -60,5 +60,11 @@ class CodigoItemSeeder extends Seeder
             'description' => 'Enviado',
         ]);
 
+        DB::table('item_code')->insert([
+            'code_id' => '1',
+            'name' => 'DEV',
+            'description' => 'Devolvido',
+        ]);
+
     }
 }

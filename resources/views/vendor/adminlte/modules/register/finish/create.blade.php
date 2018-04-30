@@ -40,7 +40,7 @@
             console.log(e);
             var state_id = e.target.value;
             $.get('/county/ajax?state_id=' + state_id, function(data) {
-                console.log(data);
+                // console.log(data);
                 $('#county_id').empty();
                 $('#county_id').append("<option value=''>Selecione</option>");
                 var sorted = _.sortBy(data);

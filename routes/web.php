@@ -39,10 +39,10 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         foreach($county as $v){
-            $retorn[$v['id']] = $v['name'];
+            $return[$v['id']] = $v['name'];
         }
 
-        return $retorn;
+        return $return;
 
     });
 
