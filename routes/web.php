@@ -42,7 +42,6 @@ Route::group(['middleware' => 'auth'], function () {
             $retorn[$v['id']] = $v['name'];
         }
 
-        
         return $retorn;
 
     });

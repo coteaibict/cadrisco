@@ -43,7 +43,8 @@
                 console.log(data);
                 $('#county_id').empty();
                 $('#county_id').append("<option value=''>Selecione</option>");
-                $.each(data, function(index,subCatObj){
+                var sorted = _.sortBy(data);
+                $.each(sorted, function(index,subCatObj){
                     $('#county_id').append("<option value='"+ index +"'>" + subCatObj + "</option>");
                 });
             });
