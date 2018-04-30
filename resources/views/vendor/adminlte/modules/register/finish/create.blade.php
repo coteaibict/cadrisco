@@ -12,7 +12,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Inserir Solicitação</h3>
                 <div class="box-tools pull-right">
-                    <a href="/register/finish" class="btn btn-box-tool"  title="Voltar">
+                    <a href="/documents" class="btn btn-box-tool"  title="Voltar">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>

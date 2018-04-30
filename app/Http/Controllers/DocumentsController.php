@@ -1,21 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers;
 
 use App\Forms\RegisterFinishForm;
+use App\Grids\DocumentsGrid;
+use App\Models\Document;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class DocumentsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(DocumentsGrid $documentsGrid, Request $request)
     {
-        //
+        return $documentsGrid
+            ->create(['query' => Document::query(), 'request' => $request])
+            ->renderOn('adminlte::modules.register.finish.index'); // render the grid on the welcome view
     }
 
     /**
@@ -26,7 +34,7 @@ class DocumentsController extends Controller
     public function create()
     {
         $form = \FormBuilder::create(RegisterFinishForm::class,[
-            'url' => route('register.finish.store'),
+            'url' => route('documents.store'),
             'method' => 'POST'
         ]);
 

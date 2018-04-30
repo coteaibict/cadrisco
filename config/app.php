@@ -168,6 +168,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         LaravelLegends\PtBrValidator\ValidatorProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -238,6 +239,7 @@ return [
         'Navigation' => Bootstrapper\Facades\Navigation::class,
         'Alert' => Bootstrapper\Facades\Alert::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

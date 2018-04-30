@@ -37,10 +37,14 @@ class Table
         if (!$model) {
             return $this->model;
         }
+
         $this->model = !is_object($model) ? new $model : $model;
         $this->modelOriginal = clone $this->model;
+
         return $this;
     }
+
+
     public function filters($filters)
     {
         $this->filters = $filters;

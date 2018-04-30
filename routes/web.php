@@ -27,15 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
+    Route::resource('documents', 'DocumentsController');
 
-    Route::prefix('register')->group(function (){
-        Route::group([
-            'namespace' => 'Users\\',
-            'as' => 'register.'
-        ], function (){
-            Route::resource('finish', 'DocumentsController');
-        });
-    });
 
 
 
