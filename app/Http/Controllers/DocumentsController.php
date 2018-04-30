@@ -5,25 +5,73 @@ namespace App\Http\Controllers;
 use App\Forms\RegisterFinishForm;
 use App\Grids\DocumentsGrid;
 use App\Models\Document;
+use App\Table\Table;
 use Illuminate\Http\Request;
 
 class DocumentsController extends Controller
 {
 
-    public function __construct()
+    public function __construct(Table $table)
     {
         $this->middleware('auth');
+        $this->table = $table;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(DocumentsGrid $documentsGrid, Request $request)
+    public function index()
     {
-        return $documentsGrid
-            ->create(['query' => Document::query(), 'request' => $request])
-            ->renderOn('adminlte::modules.register.finish.index'); // render the grid on the welcome view
+
+        $this->table
+            ->model(Document::class)
+            ->where([
+                'field' => 'user_id',
+                'operator' => '=',
+                'search' => '1'
+            ])
+            ->columns([
+                [
+                    'label' => 'ID',
+                    'name' => 'id',
+                    'order' => true //true, asc ou desc
+                ],
+                [
+                    'label' => 'Portaria',
+                    'name' => 'ordinance',
+                    'order' => true //true, asc ou desc
+                ],
+                [
+                    'label' => 'Perfil',
+                    'name' => 'role',
+                    'order' => true //true, asc ou desc
+                ]
+            ])
+            ->filters([
+                [
+                    'name' => 'role',
+                    'operator' => 'LIKE'
+                ]
+            ])
+            ->addShowAction('admin.users.show')
+            ->addEditAction('admin.users.edit')
+            ->addDeleteAction('admin.users.destroy')
+            //->addMoreAction([
+            //    [
+            //        'label' => 'Grupos',
+            //        'route' => 'admin.users.create'
+            //    ],
+            //    [
+            //        'label' => 'Unidades',
+            //        'route' => 'admin.users.update'
+            //    ]
+            //])
+            ->search();
+
+        return view('adminlte::modules.register.finish.index', ['table' => $this->table]);
+
+
     }
 
     /**

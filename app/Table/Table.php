@@ -16,6 +16,7 @@ class Table
     private $columns = [];
     private $actions = [];
     private $actionsMore = [];
+    private $where = [];
     private $filters = [];
     /**
      * @var Builder
@@ -32,6 +33,7 @@ class Table
     {
         return $this->rows;
     }
+
     public function model($model = null)
     {
         if (!$model) {
@@ -42,8 +44,14 @@ class Table
         $this->modelOriginal = clone $this->model;
 
         return $this;
+
     }
 
+    public function where($where = null)
+    {
+        $this->where = $where;
+        return $this;
+    }
 
     public function filters($filters)
     {
@@ -124,6 +132,7 @@ class Table
         $this->applyFilters();
         $this->applyOrders();
         $this->perPage();
+        $this->applyWhere();
         $this->rows = $this->model->paginate($this->perPage, $columns);
         return $this;
     }
@@ -159,7 +168,6 @@ class Table
                     $query->where($field,$operator,$search);
                 });
             }
-            //WHERE campo = 'valor' OR campo = 'valor'
         }
     }
     protected function applyOrders(){
@@ -178,4 +186,15 @@ class Table
             }
         }
     }
+
+    protected function applyWhere(){
+
+        $where = $this->where;
+
+        if(isset($where['field'])){
+            $this->model = $this->model->where($where['field'], $where['operator'], $where['search']);
+        }
+
+    }
+
 }
