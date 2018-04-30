@@ -57,9 +57,9 @@ class DocumentsController extends Controller
                     'operator' => 'LIKE'
                 ]
             ])
-            ->addShowAction('admin.users.show')
-            ->addEditAction('admin.users.edit')
-            ->addDeleteAction('admin.users.destroy')
+            ->addShowAction('documents.show')
+            ->addEditAction('documents.edit')
+            ->addDeleteAction('documents.destroy')
             //->addMoreAction([
             //    [
             //        'label' => 'Grupos',
@@ -147,8 +147,10 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Document $document)
     {
-        //
+        $document->delete();
+        session()->flash('message','Solicitação excluída com sucesso');
+        return redirect()->route('documents.index');
     }
 }

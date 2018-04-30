@@ -10,9 +10,9 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Editar Usuário</h3>
+                <h3 class="box-title">Editar Solicitação</h3>
                 <div class="box-tools pull-right">
-                    <a href="/admin/users" class="btn btn-box-tool"  title="Voltar">
+                    <a href="/documents" class="btn btn-box-tool"  title="Voltar">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>

@@ -35,12 +35,14 @@ Route::group(['middleware' => 'auth'], function () {
         $state = \App\Models\State::with('mesoregion.county')->find($state_id);
         $county = [];
         $state->mesoregion->each(function ($mesoregion) use (&$county){
-            $county = array_merge($county,$mesoregion->county->toArray());
+            $county = array_merge($county,$mesoregion->county->sortBy("name")->toArray());
         });
+
         foreach($county as $v){
             $retorn[$v['id']] = $v['name'];
         }
 
+        
         return $retorn;
 
     });

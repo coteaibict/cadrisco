@@ -10,7 +10,7 @@
     <!-- Default box -->
     <div class="box box-solid box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Listagem de Solicitações</h3>
+            <h3 class="box-title">Minhas de Solicitações</h3>
         </div>
         <div class="box-body">
             <div class="box-tools">

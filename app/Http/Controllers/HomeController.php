@@ -44,9 +44,5 @@ class HomeController extends Controller
         return view('adminlte::home');
     }
 
-    public function finish_form()
-    {
-        return view('adminlte::home');
-    }
 
 }
