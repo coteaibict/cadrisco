@@ -38,7 +38,7 @@ class HomeController extends Controller
         $user = Auth::user();
 
         if(!$user->hasAnyRole(Role::all())){
-            return redirect('register/finish');
+            return redirect('documents');
         }
 
         return view('adminlte::home');

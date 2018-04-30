@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Forms\RegisterFinishForm;
-use App\Grids\DocumentsGrid;
 use App\Models\Document;
 use App\Table\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentsController extends Controller
 {
@@ -24,12 +24,14 @@ class DocumentsController extends Controller
     public function index()
     {
 
+        $user = Auth::user();
+
         $this->table
             ->model(Document::class)
             ->where([
                 'field' => 'user_id',
                 'operator' => '=',
-                'search' => '1'
+                'search' => $user->id
             ])
             ->columns([
                 [
