@@ -38,12 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
             $county = array_merge($county,$mesoregion->county->sortBy("name")->toArray());
         });
 
-        foreach($county as $v){
-            $return[$v['id']] = $v['name'];
-        }
-
-        return $return;
-
+        return $county;
     });
 
 

@@ -104,7 +104,51 @@ class DocumentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form = \FormBuilder::create(RegisterFinishForm::class);
+
+        if(!$form->isValid()){
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
+        }
+
+        $data = $form->getFieldValues();
+
+        if($data['role']=='national'){
+            $data['state_id'] = null;
+            $data['county_id'] = null;
+        }
+
+        if($data['role']=='state'){
+            $data['county_id'] = null;
+            if($data['state_id'] == null){
+                $request->session()->flash('error', 'Selecione um Estado!');
+                return redirect()->back()->withInput();
+            }
+        }
+
+        if($data['role']=='county'){
+            if($data['state_id'] == null){
+                $request->session()->flash('error', 'Selecione um Estado!');
+                return redirect()->back()->withInput();
+            }else{
+                if($data['county_id'] == null){
+                    $request->session()->flash('error', 'Selecione um Município!');
+                    return redirect()->back();
+                }
+            }
+        }
+
+        dd($data);
+
+        $data['situation'] = 'PEN';
+
+        Document::create($data);
+
+        $request->session()->flash('message', 'Solicitação criada com sucesso!');
+
+        return redirect()->route('documents.index');
     }
 
     /**

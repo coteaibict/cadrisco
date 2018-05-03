@@ -9,7 +9,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         window.setTimeout(function() {
-            $(".callout").fadeTo(1000, 0).slideUp(1000, function(){
+            $(".callout").fadeTo(4000, 0).slideUp(3000, function(){
                 $(this).remove();
             });
         }, 1500);

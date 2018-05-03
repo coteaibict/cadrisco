@@ -50,6 +50,15 @@ desired effect
             </div>
 
         @endif
+        @if(Session::has('error'))
+            <br>
+            <div class="row" align="right">
+                <div class="callout callout-warning" style="width: 300px">
+                    <i class="icon fa fa-exclamation-triangle"></i> {!! Session::get('error') !!}
+                </div>
+            </div>
+
+    @endif
         <!-- Main content -->
         <section class="content">
             <!-- Your Page Content Here -->

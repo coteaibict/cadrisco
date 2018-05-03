@@ -16,16 +16,16 @@ class RegisterFinishForm extends Form
         $this
             ->add('ordinance', 'file', [
                 'label' => 'Diário Oficial',
-                'rules' => "required"
+                'rules' => "required|mimes:pdf"
             ])
             ->add('declaration', 'file', [
                 'label' => 'Declaração',
-                'rules' => "required"
+                'rules' => "required|mimes:pdf"
             ])
             ->add('role', 'select', [
                 'label' => 'Perfil Pretendido',
                 'rules' => "required",
-                'choices' => ['state' => 'Estadual', 'county' => 'Municipal', 'national' => 'National'],
+                'choices' => ['state' => 'Estadual', 'county' => 'Municipal', 'national' => 'Nacional'],
                 'empty_value' => 'Selecione',
                 'rules' => "required"
             ])
@@ -36,6 +36,7 @@ class RegisterFinishForm extends Form
             ])
             ->add('county_id', 'select', [
                 'label' => 'Município',
+                'choices' => $county,
                 'empty_value' => 'Selecione',
             ]);
     }

@@ -20,7 +20,7 @@
             </div>
             <div class="box-body">
                 <fieldset class="form-group">
-                    {!! form($form->add('salvar','submit',[
+                    {!! form($form->add('incluir','submit',[
                     'attr' => [
                         'class' => 'btn btn-primary'
                     ],
@@ -36,19 +36,20 @@
 
 @push('scripts')
     <script>
-        $('#state_id').on('change', function(e){
-            console.log(e);
-            var state_id = e.target.value;
-            $.get('/county/ajax?state_id=' + state_id, function(data) {
-                // console.log(data);
-                $('#county_id').empty();
-                $('#county_id').append("<option value=''>Selecione</option>");
-                var sorted = _.sortBy(data);
-                $.each(sorted, function(index,subCatObj){
-                    $('#county_id').append("<option value='"+ index +"'>" + subCatObj + "</option>");
+        $(document).ready(function(){
+            $('#state_id').on('change', function(e){
+                var state_id = e.target.value;
+                $.get('/county/ajax?state_id=' + state_id, function(data) {
+                    $('#county_id').empty();
+                    $('#county_id').append("<option value=''>Selecione</option>");
+                    var sorted = _.sortBy(data,'name');
+                    $.each(sorted, function(key,value){
+                        $('#county_id').append("<option value='"+ value.id +"'>" + value.name + "</option>");
+                    });
                 });
             });
         });
+
     </script>
 @endpush
     <!-- /.box -->
