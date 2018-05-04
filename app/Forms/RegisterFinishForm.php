@@ -45,7 +45,7 @@ class RegisterFinishForm extends Form
                 'selected' => $this->model ? $this->model->state->county->id : '',
                 'empty_value' => 'Selecione',
                 'query_builder' => function (County $model) use($model){
-                    consultar os counties de acordo com o state
+//                    consultar os counties de acordo com o state
                     return $model->where('state_id', $model->state_id);
                 }
             ]);
