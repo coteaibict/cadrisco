@@ -10,11 +10,9 @@ class RegisterFinishForm extends Form
     public function buildForm()
     {
 
-        $model = $this->model;
-
         $state = $this->getData('state') ?? "NULL";
 
-//        $county = $this->getData('county') ?? "NULL";
+        $county = $this->getData('county') ?? "NULL";
 
         $this
             ->add('ordinance', 'file', [
@@ -39,15 +37,9 @@ class RegisterFinishForm extends Form
             ])
             ->add('county_id', 'select', [
                 'label' => 'Município',
-                'class' => County::class,
-                'property' => 'name',
-                'property_key' => 'id',
-                'selected' => $this->model ? $this->model->state->county->id : '',
+                'choices' => $county,
                 'empty_value' => 'Selecione',
-                'query_builder' => function (County $model) use($model){
-//                    consultar os counties de acordo com o state
-                    return $model->where('state_id', $model->state_id);
-                }
+                'selected' => $this->model ? $this->model->county_id : '',
             ]);
     }
 }

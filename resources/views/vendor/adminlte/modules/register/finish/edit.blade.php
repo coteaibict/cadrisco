@@ -35,9 +35,20 @@
     </div>
 </div>
 @push('scripts')
-    <script type="text/javascript">
-
-        $('#cpf').mask('999.999.999-99');
+    <script>
+        $(document).ready(function(){
+            $('#state_id').on('change', function(e){
+                var state_id = e.target.value;
+                $.get('/county/ajax?state_id=' + state_id, function(data) {
+                    $('#county_id').empty();
+                    $('#county_id').append("<option value=''>Selecione</option>");
+                    var sorted = _.sortBy(data,'name');
+                    $.each(sorted, function(key,value){
+                        $('#county_id').append("<option value='"+ value.id +"'>" + value.name + "</option>");
+                    });
+                });
+            });
+        });
 
     </script>
 @endpush

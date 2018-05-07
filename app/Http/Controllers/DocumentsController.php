@@ -90,7 +90,7 @@ class DocumentsController extends Controller
         $form = \FormBuilder::create(RegisterFinishForm::class,[
             'url' => route('documents.store'),
             'method' => 'POST',
-            'data' => ['state' => $state]
+            'data' => ['state' => $state, 'county' => []]
         ]);
 
         return view('adminlte::modules.register.finish.create',compact('form'));
@@ -140,15 +140,17 @@ class DocumentsController extends Controller
             }
         }
 
-        dd($data);
+//        dd($data);
 
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
         $data['situation'] = 'PEN';
 
-        Document::create($data);
+        $document = Document::create($data);
 
         $request->session()->flash('message', 'Solicitação criada com sucesso!');
 
-        return redirect()->route('documents.index');
+        return redirect()->route('documents.edit', [ 'document' => $document->id ]);
     }
 
     /**
@@ -157,9 +159,9 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Document $document)
     {
-        //
+
     }
 
     /**
@@ -168,9 +170,31 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Document $document)
     {
-        //
+        $state = State::select(DB::raw("CONCAT(initials,' - ',name) AS name"),'id')
+            ->orderBy('name','asc')->pluck('name','id')->toArray();
+
+        $state_id = State::with('mesoregion.county')->find($document->state_id);
+        $count = [];
+        $state_id->mesoregion->each(function ($mesoregion) use (&$count){
+            $count = array_merge($count,$mesoregion->county->sortBy("name")->toArray());
+        });
+
+        foreach ($count as $key => $value){
+            $county[$value['id']] = $value['name'];
+        }
+
+        asort($county);
+
+        $form = \FormBuilder::create(RegisterFinishForm::class,[
+            'url' => route('admin.users.update', [ 'user' => $document->id ]),
+            'method' => 'PUT',
+            'model' => $document,
+            'data' => ['state' => $state, 'county' => $county]
+        ]);
+
+        return view('adminlte::modules.register.finish.edit',compact('form'));
     }
 
     /**
