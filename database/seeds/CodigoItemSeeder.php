@@ -20,7 +20,7 @@ class CodigoItemSeeder extends Seeder
 
         DB::table('item_code')->insert([
             'code_id' => '1',
-            'name' => 'ENV',
+            'name' => 'PEN',
             'description' => 'Pendente de Envio',
         ]);
 
@@ -33,38 +33,62 @@ class CodigoItemSeeder extends Seeder
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'SUS',
-            'description' => 'Suspenso',
+            'description' => 'Suspensa',
         ]);
 
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'REV',
-            'description' => 'Revogado',
+            'description' => 'Revogada',
         ]);
 
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'AUT',
-            'description' => 'Autorizado',
+            'description' => 'Autorizada',
         ]);
 
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'REC',
-            'description' => 'Recusado',
+            'description' => 'Recusada',
         ]);
 
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'ENV',
-            'description' => 'Enviado',
+            'description' => 'Enviada',
         ]);
 
         DB::table('item_code')->insert([
             'code_id' => '1',
             'name' => 'DEV',
-            'description' => 'Devolvido',
+            'description' => 'Devolvida',
         ]);
+
+        DB::table('code')->insert([
+            'description' => 'Pretend Role',
+            'visible' => false,
+        ]);
+
+        DB::table('item_code')->insert([
+            'code_id' => '2',
+            'name' => 'state',
+            'description' => 'Estadual',
+        ]);
+
+        DB::table('item_code')->insert([
+            'code_id' => '2',
+            'name' => 'county',
+            'description' => 'Municipal',
+        ]);
+
+        DB::table('item_code')->insert([
+            'code_id' => '2',
+            'name' => 'national',
+            'description' => 'Nacional',
+        ]);
+
 
     }
 }

@@ -9,6 +9,7 @@ use App\Table\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentsController extends Controller
 {
@@ -36,8 +37,8 @@ class DocumentsController extends Controller
             ])
             ->columns([
                 [
-                    'label' => 'ID',
-                    'name' => 'id',
+                    'label' => 'Perfil Pretendido',
+                    'name' => 'role',
                     'order' => true //true, asc ou desc
                 ],
                 [
@@ -46,10 +47,16 @@ class DocumentsController extends Controller
                     'order' => true //true, asc ou desc
                 ],
                 [
-                    'label' => 'Perfil',
-                    'name' => 'role',
+                    'label' => 'Declaração',
+                    'name' => 'declaration',
                     'order' => true //true, asc ou desc
+                ],
+                [
+                    'label' => 'Situação',
+                    'name' => 'situation',
+                    'order' => true
                 ]
+
             ])
             ->filters([
                 [
@@ -115,12 +122,12 @@ class DocumentsController extends Controller
 
         $data = $form->getFieldValues();
 
-        if($data['role']=='national'){
+        if($data['role']=='Nacional'){
             $data['state_id'] = null;
             $data['county_id'] = null;
         }
 
-        if($data['role']=='state'){
+        if($data['role']=='Estadual'){
             $data['county_id'] = null;
             if($data['state_id'] == null){
                 $request->session()->flash('error', 'Selecione um Estado!');
@@ -128,7 +135,7 @@ class DocumentsController extends Controller
             }
         }
 
-        if($data['role']=='county'){
+        if($data['role']=='Municipal'){
             if($data['state_id'] == null){
                 $request->session()->flash('error', 'Selecione um Estado!');
                 return redirect()->back()->withInput();
@@ -140,17 +147,73 @@ class DocumentsController extends Controller
             }
         }
 
-//        dd($data);
+
+        // Define o valor default para a variável que contém o nome da imagem
+        $nameordinance = null;
+        $namedeclaration = null;
+
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('ordinance') && $request->file('ordinance')->isValid()) {
+
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));;
+
+            // Recupera a extensão do arquivo
+            $extension = $request->ordinance->extension();
+
+            // Define finalmente o nome
+            $nameordinance = "{$name}.{$extension}";
+
+            // Faz o upload:
+            $upload = $request->ordinance->storeAs('ordinance', $nameordinance);
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if ( !$upload ){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Falha ao fazer upload')
+                    ->withInput();
+            }
+
+            $data['ordinance'] = $nameordinance;
+        }
+
+        if ($request->hasFile('declaration') && $request->file('declaration')->isValid()) {
+
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name1 = uniqid(date('HisYmd'));;
+
+            // Recupera a extensão do arquivo
+            $extension1 = $request->declaration->extension();
+
+            // Define finalmente o nome
+            $namedeclaration = "{$name1}.{$extension1}";
+
+            // Faz o upload:
+            $upload1 = $request->declaration->storeAs('declaration', $namedeclaration);
+
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if ( !$upload1 ){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Falha ao fazer upload')
+                    ->withInput();
+            }
+
+            $data['declaration'] = $namedeclaration;
+        }
+
 
         $user = Auth::user();
         $data['user_id'] = $user->id;
-        $data['situation'] = 'PEN';
+        $data['situation'] = 'Pendente de Envio';
 
         $document = Document::create($data);
 
         $request->session()->flash('message', 'Solicitação criada com sucesso!');
 
-        return redirect()->route('documents.edit', [ 'document' => $document->id ]);
+        return redirect()->route('documents.show', [ 'document' => $document->id ]);
     }
 
     /**
@@ -161,7 +224,7 @@ class DocumentsController extends Controller
      */
     public function show(Document $document)
     {
-
+        return view('adminlte::modules.register.finish.show',compact('document'));
     }
 
     /**
@@ -187,8 +250,9 @@ class DocumentsController extends Controller
 
         asort($county);
 
+
         $form = \FormBuilder::create(RegisterFinishForm::class,[
-            'url' => route('admin.users.update', [ 'user' => $document->id ]),
+            'url' => route('documents.update', [ 'document' => $document->id ]),
             'method' => 'PUT',
             'model' => $document,
             'data' => ['state' => $state, 'county' => $county]
@@ -204,9 +268,126 @@ class DocumentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Document $document, Request $request)
     {
-        //
+        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida'){
+            $form = \FormBuilder::create(RegisterFinishForm::class, [
+                'data' => ['id' => $document->id]
+            ]);
+
+
+            if(!$form->isValid()){
+                return redirect()
+                    ->back()
+                    ->withErrors($form->getErrors())
+                    ->withInput();
+            }
+
+            $data = $form->getFieldValues();
+
+
+
+            if($data['role']=='Nacional'){
+                $data['state_id'] = null;
+                $data['county_id'] = null;
+            }
+
+            if($data['role']=='Estadual'){
+                $data['county_id'] = null;
+                if($data['state_id'] == null){
+                    $request->session()->flash('error', 'Selecione um Estado!');
+                    return redirect()->back()->withInput();
+                }
+            }
+
+            if($data['role']=='Municipal'){
+                if($data['state_id'] == null){
+                    $request->session()->flash('error', 'Selecione um Estado!');
+                    return redirect()->back()->withInput();
+                }else{
+                    if($data['county_id'] == null){
+                        $request->session()->flash('error', 'Selecione um Município!');
+                        return redirect()->back();
+                    }
+                }
+            }
+
+
+            // Define o valor default para a variável que contém o nome da imagem
+            $nameordinance = null;
+            $namedeclaration = null;
+
+            // Verifica se informou o arquivo e se é válido
+            if ($request->hasFile('ordinance') && $request->file('ordinance')->isValid()) {
+
+                // Define um aleatório para o arquivo baseado no timestamps atual
+                $name = uniqid(date('HisYmd'));;
+
+                // Recupera a extensão do arquivo
+                $extension = $request->ordinance->extension();
+
+                // Define finalmente o nome
+                $nameordinance = "{$name}.{$extension}";
+
+                // Faz o upload:
+                $upload = $request->ordinance->storeAs('ordinance', $nameordinance);
+                // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+
+                // Verifica se NÃO deu certo o upload (Redireciona de volta)
+                if ( !$upload ){
+                    return redirect()
+                        ->back()
+                        ->with('error', 'Falha ao fazer upload')
+                        ->withInput();
+                }
+
+                $data['ordinance'] = $nameordinance;
+            }
+
+            if ($request->hasFile('declaration') && $request->file('declaration')->isValid()) {
+
+                // Define um aleatório para o arquivo baseado no timestamps atual
+                $name1 = uniqid(date('HisYmd'));;
+
+                // Recupera a extensão do arquivo
+                $extension1 = $request->declaration->extension();
+
+                // Define finalmente o nome
+                $namedeclaration = "{$name1}.{$extension1}";
+
+                // Faz o upload:
+                $upload1 = $request->declaration->storeAs('declaration', $namedeclaration);
+
+                // Verifica se NÃO deu certo o upload (Redireciona de volta)
+                if ( !$upload1 ){
+                    return redirect()
+                        ->back()
+                        ->with('error', 'Falha ao fazer upload')
+                        ->withInput();
+                }
+
+                $data['declaration'] = $namedeclaration;
+            }
+
+
+            $user = Auth::user();
+            $data['user_id'] = $user->id;
+            $data['situation'] = 'Pendente de Envio';
+
+            \Storage::delete('ordinance/'.$document->ordinance);
+            \Storage::delete('declaration/'.$document->declaration);
+
+            $document->update($data);
+            session()->flash('message','Solicitação editada com sucesso');
+
+            return redirect()->route('documents.show', [ 'document' => $document->id ]);
+        }
+
+        return redirect()
+            ->back()
+            ->with('error', 'Essa solicitação não pode ser alterada!')
+            ->withInput();
+
     }
 
     /**
@@ -217,8 +398,40 @@ class DocumentsController extends Controller
      */
     public function destroy(Document $document)
     {
-        $document->delete();
-        session()->flash('message','Solicitação excluída com sucesso');
-        return redirect()->route('documents.index');
+
+        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida'){
+
+            Storage::delete('ordinance/'.$document->ordinance);
+            Storage::delete('declaration/'.$document->declaration);
+
+            $document->delete();
+            session()->flash('message','Solicitação excluída com sucesso');
+            return redirect()->route('documents.index');
+        }
+
+        return redirect()
+            ->back()
+            ->with('error', 'Essa solicitação não pode ser excluida!')
+            ->withInput();
+    }
+
+    public function send($id)
+    {
+        $document = Document::findOrFail($id);
+
+        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida'){
+
+            $data['situation'] = 'Enviada';
+
+            $document->update($data);
+
+            session()->flash('message','Solicitação enviada com sucesso');
+            return redirect()->route('documents.index');
+        }
+
+        return redirect()
+            ->back()
+            ->with('error', 'Essa solicitação não pode ser enviada!')
+            ->withInput();
     }
 }

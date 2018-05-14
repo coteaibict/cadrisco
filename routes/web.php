@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('documents', 'DocumentsController');
 
+    Route::get('documents/send/{id}', 'DocumentsController@send');
+
     Route::get('/county/ajax',function()
     {
         $state_id = \Illuminate\Support\Facades\Input::get('state_id');
@@ -42,5 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
 
+    Route::get('/download/ordinance/{file}', 'DownloadsController@ordinance');
+    Route::get('/download/declaration/{file}', 'DownloadsController@declaration');
 
 });

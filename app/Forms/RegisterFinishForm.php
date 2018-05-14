@@ -26,7 +26,7 @@ class RegisterFinishForm extends Form
             ->add('role', 'select', [
                 'label' => 'Perfil Pretendido',
                 'rules' => "required",
-                'choices' => ['state' => 'Estadual', 'county' => 'Municipal', 'national' => 'Nacional'],
+                'choices' => ['Estadual' => 'Estadual', 'Municipal' => 'Municipal', 'Nacional' => 'Nacional'],
                 'empty_value' => 'Selecione',
                 'rules' => "required"
             ])

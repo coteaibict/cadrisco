@@ -10,9 +10,9 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Visualizar Usuário</h3>
+                <h3 class="box-title">Visualizar Solicitação</h3>
                 <div class="box-tools pull-right">
-                    <a href="/admin/users" class="btn btn-box-tool"  title="Voltar">
+                    <a href="/documents" class="btn btn-box-tool"  title="Voltar">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -20,9 +20,14 @@
             </div>
             <div class="box-body">
                 @php
-                    $linkEdit = route('admin.users.edit',['user' => $user->id]);
-                    $linkDelete = route('admin.users.destroy',['user' => $user->id]);
+                        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida' ){
+                            $linkEdit = route('documents.edit',['document' => $document->id]);
+                            $linkDelete = route('documents.destroy',['document' => $document->id]);
+                            $linkSend = url('/documents/send/'.$document->id);
+                        }
                 @endphp
+                @if ($document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida')
+                {!! Button::success(Icon::create('envelope').' Enviar')->asLinkTo($linkSend)->small()->addAttributes(['class' => 'hidden-print']) !!}
                 {!! Button::primary(Icon::pencil().' Editar')->asLinkTo($linkEdit)->small()->addAttributes(['class' => 'hidden-print']) !!}
                 {!!
                 Button::danger(Icon::remove().' Excluir')->asLinkTo($linkDelete)
@@ -31,33 +36,58 @@
                     'class' => 'hidden-print'
                 ])->small()
                 !!}
+                @endif
                 @php
-                    $formDelete = FormBuilder::plain([
-                        'id' => 'form-delete',
-                        'url' => $linkDelete,
-                        'method' => 'DELETE',
-                        'style' => 'display:none'
-                        ])
+                    if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida' ){
+                        $formDelete = FormBuilder::plain([
+                            'id' => 'form-delete',
+                            'url' => $linkDelete,
+                            'method' => 'DELETE',
+                            'style' => 'display:none'
+                            ]);
+                    }
                 @endphp
+                @if ($document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida')
                 {!! form($formDelete) !!}
+                @endif
                 <br><br>
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <th scope="row">ID</th>
-                        <td>{{$user->id}}</td>
+                        <th scope="row">Diário Oficial</th>
+                        <td><a href="{{url('download/ordinance/'.$document->ordinance)}}" target="_blank">{{$document->ordinance}}</a></td>
                     </tr>
                     <tr>
-                        <th scope="row">CPF</th>
-                        <td>{{$user->cpf}}</td>
+                        <th scope="row">Declaração</th>
+                        <td><a href="{{url('download/declaration/'.$document->declaration)}}" target="_blank">{{$document->declaration}}</a></td>
                     </tr>
                     <tr>
-                        <th scope="row">Nome</th>
-                        <td>{{$user->name}}</td>
+                        <th scope="row">Perfil Pretendido</th>
+                        <td>{{$document->role}}</td>
                     </tr>
                     <tr>
-                        <th scope="row">E-mail</th>
-                        <td>{{$user->email}}</td>
+                        <th scope="row">Estado</th>
+                        <td>@if ( isset($document->state))
+                            {{  $document->state->initials. " - " . $document->state->name }}
+                            @else
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Município</th>
+                        <td>@if ( isset($document->county))
+                            {{$document->county->name }}
+                            @else
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Observação</th>
+                        <td>{{$document->note}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Situação</th>
+                        <td>{{$document->situation}}</td>
                     </tr>
                     </tbody>
                 </table>
