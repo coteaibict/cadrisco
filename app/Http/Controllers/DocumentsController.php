@@ -270,7 +270,9 @@ class DocumentsController extends Controller
      */
     public function update(Document $document, Request $request)
     {
-        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida'){
+        $user = Auth::user();
+
+        if(($document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida') and $document->user_id == $user->id){
             $form = \FormBuilder::create(RegisterFinishForm::class, [
                 'data' => ['id' => $document->id]
             ]);
@@ -399,7 +401,9 @@ class DocumentsController extends Controller
     public function destroy(Document $document)
     {
 
-        if( $document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida'){
+        $user = Auth::user();
+
+        if(($document->situation == 'Pendente de Envio' or $document->situation == 'Devolvida') and $document->user_id == $user->id){
 
             Storage::delete('ordinance/'.$document->ordinance);
             Storage::delete('declaration/'.$document->declaration);
