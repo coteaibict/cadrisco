@@ -6,6 +6,7 @@
 /.idea
 /.vagrant
 Homestead.json
+package-lock.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
